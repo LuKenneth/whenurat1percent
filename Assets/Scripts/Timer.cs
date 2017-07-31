@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using UnityEditor;
 
 public class Timer : MonoBehaviour {
 
@@ -8,7 +7,7 @@ public class Timer : MonoBehaviour {
 
 	public TimerCallback callback;
 	float time;
-	bool run = false;
+	public bool run = false;
 
 	public void RunAfter(TimerCallback callback, float time) {
 		this.callback = callback;

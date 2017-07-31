@@ -5,7 +5,10 @@ using UnityEngine;
 public class CloseButton : MonoBehaviour {
 
 	private GameObject lowPowerMode;
-	public Timer timer;
+	public GameObject theirMessageUpper;
+	public GameObject grayBubbleUpper;
+	public AudioSource incoming;
+	public TextManager textManager;
 
 	// Use this for initialization
 	void Start () {
@@ -14,6 +17,10 @@ public class CloseButton : MonoBehaviour {
 
 	void OnMouseDown() {
 		lowPowerMode.SetActive(false);
+		theirMessageUpper.SetActive (true);
+		grayBubbleUpper.SetActive (true);
+		incoming.Play ();
+		textManager.newReplies ();
 	}
 
 }

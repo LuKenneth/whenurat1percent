@@ -5,6 +5,10 @@ using UnityEngine;
 public class LowPowerModeButton : MonoBehaviour {
 
 	private GameObject lowPowerMode;
+	public GameObject theirMessageUpper;
+	public GameObject grayBubbleUpper;
+	public AudioSource incoming;
+	public TextManager textManager;
 
 	// Use this for initialization
 	void Start () {
@@ -13,5 +17,9 @@ public class LowPowerModeButton : MonoBehaviour {
 
 	void OnMouseDown() {
 		lowPowerMode.SetActive(false);
+		theirMessageUpper.SetActive (true);
+		grayBubbleUpper.SetActive (true);
+		incoming.Play ();
+		textManager.newReplies ();
 	}
 }
