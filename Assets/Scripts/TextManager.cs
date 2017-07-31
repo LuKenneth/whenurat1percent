@@ -17,7 +17,7 @@ public class TextManager : MonoBehaviour {
 
 	public Timer timer;
 	public GameObject powerDown;
-	private float gameTime = 20.0f;
+	public float gameTime = 20.0f;
 	public bool isFirstReply = true;
 
 	public GameObject[] replies;
@@ -36,6 +36,7 @@ public class TextManager : MonoBehaviour {
 	public GameObject middleFinger;
 	public GameObject drakeJosh;
 	public GameObject nsfw;
+	public bool countGameTime = false;
 
 	// Use this for initialization
 	void Start () {
@@ -46,9 +47,11 @@ public class TextManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		gameTime -= Time.deltaTime;
-		if(gameTime <= 0.0f) {
-			shutDown();
+		if(countGameTime) {
+			gameTime -= Time.deltaTime;
+			if(gameTime <= 0.0f) {
+				shutDown();
+			}
 		}
 	}
 
@@ -87,7 +90,7 @@ public class TextManager : MonoBehaviour {
 		if (!reply.pm.leftOnRead) {
 			timer.RunAfter (nextMessage, 0.5f);
 		} else {
-
+			countGameTime = false;
 			if (!reply.pm.altEnding) {
 				lorMessage = pm.lorMessage;
 				timer.RunAfter (showRead, 1.0f);
@@ -115,6 +118,7 @@ public class TextManager : MonoBehaviour {
 	}
 
 	public void gameOver() {
+		countGameTime = false;
 		theirMessageLower.SetActive (false);
 		theirMessageUpper.SetActive (false);
 		playerMessageLower.SetActive (false);
@@ -171,11 +175,8 @@ public class TextManager : MonoBehaviour {
 			newReplies ();
 		}
 		if (tm.gameOver) {
-			theirMessageLower.SetActive (false);
-			theirMessageUpper.SetActive (false);
-			playerMessageLower.SetActive (false);
-			playerMessageUpper.SetActive (false);
-			gameOverAlert.SetActive (true);
+			countGameTime = false;
+			timer.RunAfter(incomingGameOver, 2.0f);
 			gameOverAlert.GetComponentInChildren<TextMesh> ().text = tm.gameOverMessage;
 			for (int i = 0; i < replies.Length; i++) {
 				replies [i].SetActive (false);
@@ -183,6 +184,7 @@ public class TextManager : MonoBehaviour {
 			}
 		}
 		if (tm.youWin) {
+			countGameTime = false;
 			for (int i = 0; i < replies.Length; i++) {
 				replies [i].SetActive (false);
 				replies [i].GetComponent<TextMesh> ().text = "";
@@ -200,11 +202,18 @@ public class TextManager : MonoBehaviour {
 				blueBubbleUpper.SetActive (false);
 				nsfw.SetActive (true);
 				timer.RunAfter (showYouWin, 2.0f);
+			
 			}
 		}
 	}
 
+	public void incomingGameOver() {
+		gameOverAlert.SetActive (true);
+		theirMessageLower.SetActive(false);
+	}
+
 	public void showYouWin() {
+		countGameTime = false;
 		theirMessageLower.SetActive (false);
 		theirMessageUpper.SetActive (false);
 		playerMessageLower.SetActive (false);
@@ -330,11 +339,13 @@ public class TextManager : MonoBehaviour {
 																						right2.leftOnRead = true;
 																						right2.lorMessage = "So close!";
 																					PlayerMessage right3 = new PlayerMessage ("Right, my bad");
+
 																						TheirMessage exception = new TheirMessage ("...but I'll make an \nexception this time.");
 																						right3.herReply = exception;
 																						exception.youWin = true;
 																						exception.gameOverMessage = "Game Win! \nYou scored the NUD35";
 																						exception.nsfw = true;
+																
 																						//@@@YOUWIN@@@
 																						//nudes5
 																				iDontSend.setReplies (right, right2, right3);

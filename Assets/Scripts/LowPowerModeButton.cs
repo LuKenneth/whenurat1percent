@@ -21,5 +21,7 @@ public class LowPowerModeButton : MonoBehaviour {
 		grayBubbleUpper.SetActive (true);
 		incoming.Play ();
 		textManager.newReplies ();
+		textManager.gameTime = 25.0f;
+		textManager.countGameTime = true;
 	}
 }

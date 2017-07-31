@@ -21,6 +21,7 @@ public class CloseButton : MonoBehaviour {
 		grayBubbleUpper.SetActive (true);
 		incoming.Play ();
 		textManager.newReplies ();
+		textManager.countGameTime = true;
 	}
 
 }
