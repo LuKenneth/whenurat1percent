@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour {
 
+	private Camera camera;
+
+	[SerializeField]
+	private TextManager textManager;
+
 	void Start () 
 	{
 	    float targetaspect = 9.0f / 16.0f;
@@ -15,7 +20,7 @@ public class CameraController : MonoBehaviour {
 	    float scaleheight = windowaspect / targetaspect;
 
 	    // obtain camera component so we can modify its viewport
-	    Camera camera = GetComponent<Camera>();
+	    camera = GetComponent<Camera>();
 
 	    // if scaled height is less than current height, add letterbox
 	    if (scaleheight < 1.0f)
@@ -42,5 +47,21 @@ public class CameraController : MonoBehaviour {
 
 	        camera.rect = rect;
 	    }
+	}
+
+	void Update() {
+		if (textManager.countGameTime) {
+			float time = textManager.onLowPower ? 25f : 20f;
+			Color bg = new Color ((((time - textManager.gameTime) / time) / 255f) * 255f, 0, 0, 0);
+			camera.backgroundColor = bg;
+		} else if (textManager.gameTime < 0) {
+			camera.backgroundColor = Color.black;
+		}
+		if (textManager.isGameOver) {
+			camera.backgroundColor = Color.red;
+		}
+		if (textManager.victory) {
+			camera.backgroundColor = Color.green;
+		}
 	}
 }

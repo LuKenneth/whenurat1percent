@@ -7,7 +7,6 @@ public class LowPowerModeButton : MonoBehaviour {
 	private GameObject lowPowerMode;
 	public GameObject theirMessageUpper;
 	public GameObject grayBubbleUpper;
-	public AudioSource incoming;
 	public TextManager textManager;
 
 	// Use this for initialization
@@ -19,9 +18,9 @@ public class LowPowerModeButton : MonoBehaviour {
 		lowPowerMode.SetActive(false);
 		theirMessageUpper.SetActive (true);
 		grayBubbleUpper.SetActive (true);
-		incoming.Play ();
 		textManager.newReplies ();
 		textManager.gameTime = 25.0f;
 		textManager.countGameTime = true;
+		textManager.onLowPower = true;
 	}
 }

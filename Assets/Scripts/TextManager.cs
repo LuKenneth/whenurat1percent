@@ -24,8 +24,6 @@ public class TextManager : MonoBehaviour {
 	private TheirMessage tm;
 	private PlayerMessage pm;
 	private PlayerMessage[] pms;
-	public AudioSource outgoing;
-	public AudioSource incoming;
 
 	public GameObject gameOverAlert;
 	public GameObject youWinAlert;
@@ -33,10 +31,11 @@ public class TextManager : MonoBehaviour {
 	public GameObject read;
 	public string lorMessage;
 
-	public GameObject middleFinger;
-	public GameObject drakeJosh;
 	public GameObject nsfw;
 	public bool countGameTime = false;
+	public bool onLowPower = false;
+	public bool isGameOver = false;
+	public bool victory = false;
 
 	// Use this for initialization
 	void Start () {
@@ -57,6 +56,7 @@ public class TextManager : MonoBehaviour {
 
 	void shutDown() {
 		powerDown.SetActive(true);
+		isGameOver = true;
 		for (int i = 0; i < replies.Length; i++) {
 			replies [i].SetActive (false);
 			replies [i].GetComponent<TextMesh> ().text = "";
@@ -68,8 +68,7 @@ public class TextManager : MonoBehaviour {
 			replies [i].SetActive (false);
 			replies [i].GetComponent<TextMesh> ().text = "";
 		}
-		
-		outgoing.Play ();
+
 		pm = reply.pm;
 		if (isFirstReply) {
 			playerMessageLower.GetComponent<TextMesh> ().text = reply.pm.message;
@@ -101,12 +100,6 @@ public class TextManager : MonoBehaviour {
 				theirMessageUpper.SetActive (false);
 				grayBubbleLower.SetActive (false);
 				grayBubbleUpper.SetActive (false);
-				if (reply.pm.drakeJosh) {
-					drakeJosh.SetActive (true);
-				}
-				if (reply.pm.middleFinger) {
-					middleFinger.SetActive (true);
-				}
 				timer.RunAfter (gameOver, 2.0f);
 			}
 		}
@@ -114,6 +107,7 @@ public class TextManager : MonoBehaviour {
 
 	public void showRead() {
 		read.SetActive (true);
+		isGameOver = true;
 		timer.RunAfter (gameOver, 2.0f);
 	}
 
@@ -165,7 +159,6 @@ public class TextManager : MonoBehaviour {
 	}
 	
 	public void incomingMessage() {
-		incoming.Play ();
 		timer.run = false;
 		tm = pm.herReply;
 		if (!tm.gameOver && !tm.youWin) {
@@ -178,6 +171,7 @@ public class TextManager : MonoBehaviour {
 			countGameTime = false;
 			timer.RunAfter(incomingGameOver, 2.0f);
 			gameOverAlert.GetComponentInChildren<TextMesh> ().text = tm.gameOverMessage;
+			isGameOver = true;
 			for (int i = 0; i < replies.Length; i++) {
 				replies [i].SetActive (false);
 				replies [i].GetComponent<TextMesh> ().text = "";
@@ -190,9 +184,11 @@ public class TextManager : MonoBehaviour {
 				replies [i].GetComponent<TextMesh> ().text = "";
 			}
 			if (!tm.nsfw) {
+				victory = true;
 				timer.RunAfter (showYouWin, 2.0f);
 
 			} else {
+				victory = true;
 				theirMessageUpper.SetActive (true);
 				theirMessageUpper.GetComponent<TextMesh> ().text = tm.message;
 				grayBubbleLower.SetActive (false);
@@ -325,8 +321,6 @@ public class TextManager : MonoBehaviour {
 																				nahJustKid.lorMessage = "Smooth.";
 																			PlayerMessage iWanna = new PlayerMessage ("I wanna see some \nboobs");
 																				iWanna.leftOnRead = true;
-																				iWanna.drakeJosh = true;
-																				iWanna.altEnding = true;
 																				iWanna.lorMessage = "I never thought that \nit'd be so simple.";
 																				//picture of drake and josh
 																			PlayerMessage ifYou = new PlayerMessage ("If you wanna");
@@ -471,8 +465,6 @@ public class TextManager : MonoBehaviour {
 								because.lorMessage = "Darn! She definitely seemed like \nshe was gonna send those nudes!";
 							PlayerMessage becauseYour = new PlayerMessage ("Because your nudes \nwould be a good \nlaugh");
 								becauseYour.leftOnRead = true;
-								becauseYour.middleFinger = true;
-								becauseYour.altEnding = true;
 								//picture of a middle finger
 								becauseYour.lorMessage = "Smooth.";
 							PlayerMessage iJust = new PlayerMessage ("I just say stupid stuff \naround pretty people");
@@ -495,8 +487,6 @@ public class TextManager : MonoBehaviour {
 									PlayerMessage prettyFugly = new PlayerMessage ("Pretty fugly");
 										prettyFugly.leftOnRead = true;
 										prettyFugly.lorMessage = "Smooth.";
-										prettyFugly.altEnding = true;
-										prettyFugly.middleFinger = true;
 										//picture of a middle finger
 									PlayerMessage iThink = new PlayerMessage ("I think you've got \nnice melons");
 										iThink.leftOnRead = true;

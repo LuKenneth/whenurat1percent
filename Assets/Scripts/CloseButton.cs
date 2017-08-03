@@ -7,7 +7,6 @@ public class CloseButton : MonoBehaviour {
 	private GameObject lowPowerMode;
 	public GameObject theirMessageUpper;
 	public GameObject grayBubbleUpper;
-	public AudioSource incoming;
 	public TextManager textManager;
 
 	// Use this for initialization
@@ -19,7 +18,6 @@ public class CloseButton : MonoBehaviour {
 		lowPowerMode.SetActive(false);
 		theirMessageUpper.SetActive (true);
 		grayBubbleUpper.SetActive (true);
-		incoming.Play ();
 		textManager.newReplies ();
 		textManager.countGameTime = true;
 	}
