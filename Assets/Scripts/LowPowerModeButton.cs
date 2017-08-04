@@ -22,5 +22,8 @@ public class LowPowerModeButton : MonoBehaviour {
 		textManager.gameTime = 25.0f;
 		textManager.countGameTime = true;
 		textManager.onLowPower = true;
+		if (textManager.volumeOn) {
+			textManager.incoming_sound.Play ();
+		}
 	}
 }

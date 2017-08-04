@@ -37,6 +37,11 @@ public class TextManager : MonoBehaviour {
 	public bool isGameOver = false;
 	public bool victory = false;
 
+	public AudioSource incoming_sound;
+	public AudioSource outgoing_sound;
+	public bool volumeOn = true;
+	public GameObject messageBackgroundVolumeOff;
+
 	// Use this for initialization
 	void Start () {
 		initializeMessages ();
@@ -52,6 +57,7 @@ public class TextManager : MonoBehaviour {
 				shutDown();
 			}
 		}
+		messageBackgroundVolumeOff.SetActive (!volumeOn);
 	}
 
 	void shutDown() {
@@ -64,6 +70,9 @@ public class TextManager : MonoBehaviour {
 	}
 
 	public void reply(Reply reply) {
+		if (volumeOn) {
+			outgoing_sound.Play ();
+		}
 		for (int i = 0; i < replies.Length; i++) {
 			replies [i].SetActive (false);
 			replies [i].GetComponent<TextMesh> ().text = "";
@@ -159,6 +168,9 @@ public class TextManager : MonoBehaviour {
 	}
 	
 	public void incomingMessage() {
+		if (volumeOn) {
+			incoming_sound.Play ();
+		}
 		timer.run = false;
 		tm = pm.herReply;
 		if (!tm.gameOver && !tm.youWin) {
